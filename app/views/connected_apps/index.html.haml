@@ -1,0 +1,15 @@
+%div= link_to 'New Connected App', new_connected_app_path
+
+%table
+  %thead
+    %tr
+      %th Label
+      %th Public Key
+      %th
+
+  %tbody
+    - @connected_apps.each do |app|
+      %tr[app]
+        %td= app.name
+        %td= link_to 'Download', [:download, app]
+        %td= link_to 'Delete', app, method: :delete, remote: true, data: { confirm: 'Are you sure?' }
