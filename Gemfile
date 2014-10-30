@@ -13,6 +13,7 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
+  gem 'pry'
   gem 'quiet_assets'
 end
 
