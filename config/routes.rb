@@ -3,5 +3,7 @@ Rails.application.routes.draw do
     get :download, on: :member
   end
 
+  get '/pay' => 'transactions#new'
+
   root 'connected_apps#index'
 end

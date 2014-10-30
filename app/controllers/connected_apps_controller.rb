@@ -30,7 +30,7 @@ class ConnectedAppsController < ApplicationController
   end
 
   def download
-    send_file @connected_app.public_key_url
+    send_file @connected_app.public_key_path
   end
 
   private

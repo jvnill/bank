@@ -1,0 +1,15 @@
+%table
+  %thead
+    %tr
+      %th Product
+      %th Quantity
+      %th Price
+      %th Total
+
+  %tbody
+    - @details.each do |product_name, detail|
+      %tr
+        %td= product_name
+        %td= detail['quantity']
+        %td= detail['price']
+        %td= detail['quantity'].to_d * detail['price'].to_d
