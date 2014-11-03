@@ -36,7 +36,7 @@ class ConnectedAppsController < ApplicationController
   private
 
   def connected_app_param
-    params.require(:connected_app).permit(:name)
+    params.require(:connected_app).permit(:name, :redirect_url)
   end
 
   def fetch_connected_app

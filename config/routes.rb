@@ -5,5 +5,7 @@ Rails.application.routes.draw do
 
   get '/pay' => 'transactions#new'
 
+  resources :transactions, only: :create
+
   root 'connected_apps#index'
 end

@@ -5,6 +5,7 @@
     %tr
       %th ID
       %th Label
+      %th Redirect URL
       %th Public Key
       %th
 
@@ -13,5 +14,6 @@
       %tr[app]
         %td= app.id
         %td= app.name
+        %td= app.redirect_url
         %td= link_to 'Download', [:download, app]
         %td= link_to 'Delete', app, method: :delete, remote: true, data: { confirm: 'Are you sure?' }

@@ -1,7 +1,12 @@
 class ConnectedApp < ActiveRecord::Base
+  has_many :transactions, inverse_of: :connected_app
+
   belongs_to :user, inverse_of: :connected_apps
 
   validates :user, :name, presence: true
+  validates :redirect_url, presence: true, url: true
+
+  before_save :prepend_http_to_redirect_url
 
   after_create :set_passphrase
   after_create :generate_encryption_files
@@ -39,5 +44,9 @@ class ConnectedApp < ActiveRecord::Base
 
   def create_certificate_path
     FileUtils.mkdir_p(certificate_path)
+  end
+
+  def prepend_http_to_redirect_url
+    self.redirect_url = "http://#{redirect_url}" unless redirect_url.starts_with?('http')
   end
 end
