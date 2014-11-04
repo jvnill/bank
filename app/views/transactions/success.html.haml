@@ -1,0 +1,8 @@
+= form_tag app.redirect_url, method: :post do
+  - callback_data.each do |k, v|
+    = hidden_field_tag k, v
+
+  = hidden_field_tag :reference, transaction.id
+  = hidden_field_tag :random, transaction.random_token
+
+  = submit_tag 'Take me back to the store'

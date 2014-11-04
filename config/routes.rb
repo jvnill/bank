@@ -3,7 +3,8 @@ Rails.application.routes.draw do
     get :download, on: :member
   end
 
-  get '/pay' => 'transactions#new'
+  get  '/pay'    => 'transactions#new'
+  post '/verify' => 'transactions#verify'
 
   resources :transactions, only: :create
 

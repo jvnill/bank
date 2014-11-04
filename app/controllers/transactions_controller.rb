@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :verify
+
   def new
     @app         = ConnectedApp.find(params[:app_id])
     @details     = Rack::Utils.parse_nested_query(decrypted_items)
@@ -11,10 +13,16 @@ class TransactionsController < ApplicationController
 
   def create
     app = ConnectedApp.find(session[:app_id])
+    transaction = app.transactions.create(price: session[:price], random_token: SecureRandom.urlsafe_base64)
 
-    app.transactions.create(price: session[:price])
-    redirect_to "#{app.redirect_url}?#{{ callback_data: session[:callback_data] }.to_param}"
+    render template: 'transactions/success', locals: { app: app, callback_data: session[:callback_data].presence || {}, transaction: transaction }
+
     reset_session
+  end
+
+  def verify
+    Transaction.find_by!(random_token: params[:random], id: params[:reference])
+    render nothing: true
   end
 
   private
