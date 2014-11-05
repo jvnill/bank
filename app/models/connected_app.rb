@@ -9,16 +9,7 @@ class ConnectedApp < ActiveRecord::Base
   before_save :prepend_http_to_redirect_url
 
   after_create :set_passphrase
-  after_create :generate_encryption_files
-
-  def generate_encryption_files
-    create_certificate_path
-
-    key = OpenSSL::PKey::RSA.new(2048)
-
-    open(certificate_path.join('private_key.pem'), 'w') { |f| f.write(key.to_pem(OpenSSL::Cipher::Cipher.new('des3'), passphrase)) }
-    open(certificate_path.join('public_key.pem'), 'w')  { |f| f.write(key.public_key.to_pem) }
-  end
+  after_create :generate_encryption_files, unless: -> { Rails.env.test? }
 
   def public_key_path
     certificate_path.join('public_key.pem').to_s
@@ -38,8 +29,17 @@ class ConnectedApp < ActiveRecord::Base
     update_column :passphrase, passphrase
   end
 
+  def generate_encryption_files
+    create_certificate_path
+
+    key = OpenSSL::PKey::RSA.new(2048)
+
+    open(certificate_path.join('private_key.pem'), 'w') { |f| f.write(key.to_pem(OpenSSL::Cipher::Cipher.new('des3'), passphrase)) }
+    open(certificate_path.join('public_key.pem'), 'w')  { |f| f.write(key.public_key.to_pem) }
+  end
+
   def certificate_path
-    @certificate_path ||= Rails.root.join('certs', id.to_s)
+    @certificate_path ||= Rails.root.join(Rails.env.test? ? 'tmp' : '', 'certs', id.to_s)
   end
 
   def create_certificate_path
