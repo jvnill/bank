@@ -5,7 +5,7 @@ cache:
   bundler: true
 addons:
   code_climate:
-    repo_token: 66fdcd891b780c6af9b482858074c093641a9cab1a0ed0106f7e1b76c9018dec
+    repo_token: 6f0a7c68f914b08ad6763051718160e581c8f4ec4801a603e9f0cd2097edcbae
 script:
   - bundle exec rspec
 before_script:
